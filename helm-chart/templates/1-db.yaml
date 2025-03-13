@@ -5,14 +5,11 @@ metadata:
     app: db-data
   name: {{ .Values.postgres.name }}
 spec:
-  {{- if hasKey .Values.postgres "storageClass" }}
-  storageClassName: {{ .Values.postgres.storageClass }}
-  {{- end }}  
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.postgres.storageSize | default "100Mi" }}
+      storage: 100Mi
 ---
 apiVersion: apps/v1
 kind: Deployment
