@@ -6,6 +6,8 @@ replicaCount: 1
 
 postgres:
   repository: exadel/compreface-postgres-db
+  # imagePullSecrets:
+  # - pullsecret
   pullPolicy: Always
   tag: 1.2.0
   db_name: frs
@@ -14,6 +16,9 @@ postgres:
   db_user: postgres
   name: cf-db-data
   maxBodySize: "5000K"
+  # env:
+  # - name: envName
+  #   value: envValue
   # resources:
   #     requests:
   #       cpu: "0.015"
@@ -26,11 +31,16 @@ postgres:
 
 core:
   repository: exadel/compreface-core
+  # imagePullSecrets:
+  # - pullsecret
   pullPolicy: Always
   tag: 1.2.0
   port: 3000
   replicas: 1
   name: cf-core
+  # env:
+  # - name: envName
+  #   value: envValue
   # resources:
   #     requests:
   #       cpu: "0.015"
@@ -48,11 +58,16 @@ core:
 
 api:
   repository: exadel/compreface-api
+  # imagePullSecrets:
+  # - pullsecret
   pullPolicy: Always
   tag: 1.2.0
   port: 8080
   replicas: 1
   name: cf-api
+  # env:
+  # - name: envName
+  #   value: envValue
   # resources:
   #     requests:
   #       cpu: "0.015"
@@ -63,11 +78,17 @@ api:
 
 admin:
   repository: exadel/compreface-admin
+  # imagePullSecrets:
+  # - pullsecret
   pullPolicy: Always
   tag: 1.2.0
   port: 8080
   replicas: 1
-  name: cf-admin # resources:
+  name: cf-admin
+  # env:
+  # - name: envName
+  #   value: envValue
+  # resources:
   #     requests:
   #       cpu: "0.015"
   #       memory: 100Mi
@@ -79,11 +100,16 @@ admin:
 
 fe:
   repository: exadel/compreface-fe
+  # imagePullSecrets:
+  # - pullsecret
   pullPolicy: Always
   tag: 1.2.0
   port: 80
   replicas: 1
   name: cf-fe
+  # env:
+  # - name: envName
+  #   value: envValue
   # resources:
   #     requests:
   #       cpu: "0.015"
@@ -92,26 +118,7 @@ fe:
   #       memory: 200Mi
   #       cpu: "0.03"
 
-  ingress:
-    enabled: true
-    className: "nginx"
-    annotations:
-      cert-manager.io/issuer: "adcs-cluster-issuer" #use specific name of issuer
-      cert-manager.io/issuer-kind: "ClusterAdcsIssuer" #or AdcsClusterIssuer
-      cert-manager.io/issuer-group: "adcs.certmanager.csf.nokia.com"
-      cert-manager.io/common-name: "$SITECODE-compreface.macsc.net.au"
-      cert-manager.io/subject-organizations: "Southern Cross Austereo"
-      cert-manager.io/subject-organizationalunits: "Technology Services"
-      cert-manager.io/subject-countries: "AU"
-      cert-manager.io/subject-localities: "$SITE"
-      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    hosts:
-    - "$SITECODE-compreface.macsc.net.au"
-    - "compreface.macsc.net.au"
 
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
 
 serviceAccount:
   # Specifies whether a service account should be created

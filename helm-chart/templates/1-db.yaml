@@ -42,6 +42,12 @@ spec:
               value: {{ .Values.postgres.db_password }}
             - name: POSTGRES_USER
               value: {{ .Values.postgres.db_user }}
+            {{-if hasKey .Values.postgres "env"-}}
+              {{- range $env := .Values.postgres.env }}
+            - name: {{ $env.name | quote }}
+              value: {{- if and (eq (typeOf $env.value) "bool") }} {{ $env.value }} {{- else }} {{ $env.value | quote }} {{- end }}
+              {{- end}}
+            {{- end }}
           image: {{ .Values.postgres.repository }}:{{ .Values.postgres.tag }}
           {{- if hasKey .Values.postgres "resources" }}
           resources:
@@ -64,6 +70,13 @@ spec:
               name: {{ print .Release.Name "-" .Values.postgres.name | lower | nospace }}
               subPath: postgres
       restartPolicy: Always
+      {{- if hasKey .Values.postgres "imagePullSecrets" }}
+      imagePullSecrets:
+        {{- range .Values.postgres.imagePullSecrets }}
+      - name: {{ . }}
+        {{- end }}
+      {{- end }}
+
       volumes:
         - name: {{ print .Release.Name "-" .Values.postgres.name | lower | nospace }}
           persistentVolumeClaim:

@@ -32,6 +32,12 @@ spec:
               value: '{{ .Values.postgres.db_user }}'
             - name: SPRING_PROFILES_ACTIVE
               value: 'dev'
+            {{-if hasKey .Values.admin "env"-}}
+              {{- range $env := .Values.admin.env }}
+            - name: {{ $env.name | quote }}
+              value: {{- if and (eq (typeOf $env.value) "bool") }} {{ $env.value }} {{- else }} {{ $env.value | quote }} {{- end }}
+              {{- end}}
+            {{- end }}
           image: '{{ .Values.admin.repository }}:{{ .Values.admin.tag }}'
           {{- if hasKey .Values.admin "resources" }}
           resources:
@@ -50,6 +56,11 @@ spec:
           - containerPort: {{ .Values.admin.port }}
           name: {{ .Values.admin.name }}
       restartPolicy: Always
+      {{- if hasKey .Values.admin "imagePullSecrets" }}
+      imagePullSecrets:
+        {{- range .Values.admin.imagePullSecrets }}
+      - name: {{ . }}
+        {{- end }}
 ---
 apiVersion: v1
 kind: Service
