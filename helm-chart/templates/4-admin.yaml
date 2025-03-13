@@ -32,7 +32,7 @@ spec:
               value: '{{ .Values.postgres.db_user }}'
             - name: SPRING_PROFILES_ACTIVE
               value: 'dev'
-            {{-if hasKey .Values.admin "env"-}}
+            {{- if hasKey .Values.admin "env" }}
               {{- range $env := .Values.admin.env }}
             - name: {{ $env.name | quote }}
               value: {{- if and (eq (typeOf $env.value) "bool") }} {{ $env.value }} {{- else }} {{ $env.value | quote }} {{- end }}
@@ -60,6 +60,7 @@ spec:
       imagePullSecrets:
         {{- range .Values.admin.imagePullSecrets }}
       - name: {{ . }}
+        {{- end }}
         {{- end }}
 ---
 apiVersion: v1
