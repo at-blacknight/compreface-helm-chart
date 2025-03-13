@@ -5,9 +5,9 @@
 replicaCount: 1
 
 postgres:
-  repository: postgres
+  repository: exadel/compreface-postgres-db
   pullPolicy: Always
-  tag: 11.5
+  tag: 1.2.0
   db_name: frs
   db_port: 5432
   db_password: postgres
@@ -27,7 +27,7 @@ postgres:
 core:
   repository: exadel/compreface-core
   pullPolicy: Always
-  tag: 0.5.1
+  tag: 1.2.0
   port: 3000
   replicas: 1
   name: cf-core
@@ -49,7 +49,7 @@ core:
 api:
   repository: exadel/compreface-api
   pullPolicy: Always
-  tag: 0.5.1
+  tag: 1.2.0
   port: 8080
   replicas: 1
   name: cf-api
@@ -64,7 +64,7 @@ api:
 admin:
   repository: exadel/compreface-admin
   pullPolicy: Always
-  tag: 0.5.1
+  tag: 1.2.0
   port: 8080
   replicas: 1
   name: cf-admin # resources:
@@ -80,7 +80,7 @@ admin:
 fe:
   repository: exadel/compreface-fe
   pullPolicy: Always
-  tag: 0.5.1
+  tag: 1.2.0
   port: 80
   replicas: 1
   name: cf-fe
