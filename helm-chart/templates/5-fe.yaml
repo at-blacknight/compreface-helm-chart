@@ -19,7 +19,7 @@ spec:
         - env:
             - name: CLIENT_MAX_BODY_SIZE
               value: {{ default "5000K" .Values.fe.maxBodySize }}
-        - image: '{{ .Values.fe.repository }}:{{ .Values.fe.tag }}'
+          image: '{{ .Values.fe.repository }}:{{ .Values.fe.tag }}'
           {{- if hasKey .Values.fe "resources" }}
           resources:
           {{- if hasKey .Values.fe.resources "limits" }}
