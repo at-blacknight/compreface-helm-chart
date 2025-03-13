@@ -2,18 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: admin
-  name: {{ .Values.admin.name }}
+    app: {{ print .Release.Name "-admin" }}
+  name: {{ print .Release.Name "-" .Values.admin.name | lower | nospace }}
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: {{ .Values.admin.replicas }}
   selector:
     matchLabels:
-      app: admin
+      app: {{ print .Release.Name "-admin" }}
   template:
     metadata:
       labels:
-        app: admin
+        app: {{ print .Release.Name "-admin" }}
     spec:
       containers:
         - env:
@@ -33,6 +33,19 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: 'dev'
           image: '{{ .Values.admin.repository }}:{{ .Values.admin.tag }}'
+          {{- if hasKey .Values.admin "resources" }}
+          resources:
+          {{- if hasKey .Values.admin.resources "limits" }}
+          limits:
+            memory: {{ .Values.admin.resources.limits.memory | quote }}
+            cpu: {{ .Values.admin.resources.limits.cpu | quote }}
+          {{- end }}
+          {{- if hasKey .Values.admin.resources "requests" }}
+          requests:
+            memory: {{ .Values.admin.resources.requests.memory | quote }}
+            cpu: {{ .Values.admin.resources.requests.cpu | quote }}
+          {{- end }}
+          {{- end }}
           ports:
           - containerPort: {{ .Values.admin.port }}
           name: {{ .Values.admin.name }}
@@ -41,11 +54,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: compreface-admin
+  name: {{ print .Release.Name "-compreface-admin" | lower | nospace }}
   namespace: {{ .Release.Namespace }}
 spec:
   type: ClusterIP
   selector:
-      app: admin
+      app: {{ print .Release.Name "-admin" }}
   ports:
   - port: {{ .Values.admin.port }}

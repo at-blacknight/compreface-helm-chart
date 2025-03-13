@@ -2,18 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: core
-  name: {{ .Values.core.name }}
+    app: {{ print .Release.Name "-core" }}
+  name: {{ print .Release.Name "-" .Values.core.name | lower | nospace }}
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: {{ .Values.core.replicas }}
   selector:
     matchLabels:
-      app: core
+      app: {{ print .Release.Name "-core" }}
   template:
     metadata:
       labels:
-        app: core
+        app: {{ print .Release.Name "-core" }}
     spec:
 {{- if .Values.core.tolerations }}
       tolerations:
@@ -36,6 +36,22 @@ spec:
             - name: ML_PORT
               value: "{{ .Values.core.port }}"
           image: {{ .Values.core.repository }}:{{ .Values.core.tag }}
+          {{- if hasKey .Values.core "resources" }}
+          resources:
+          {{- if hasKey .Values.core.resources "limits" }}
+          limits:
+            memory: {{ .Values.core.resources.limits.memory | quote }}
+            cpu: {{ .Values.core.resources.limits.cpu | quote }}
+            {{- if .Values.core.resources.limits.gpu }}
+            nvidia.com/gpu: {{ .Values.core.resources.limits.gpu | quote }}
+            {{- end }}
+          {{- end }}
+          {{- if hasKey .Values.core.resources "requests" }}
+          requests:
+            memory: {{ .Values.core.resources.requests.memory | quote }}
+            cpu: {{ .Values.core.resources.requests.cpu | quote }}
+          {{- end }}
+          {{- end }}
           ports:
           - containerPort: {{ .Values.core.port }}
           name: {{ .Values.core.name }}
@@ -44,11 +60,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: compreface-core
+  name: {{ print .Release.Name "-compreface-core" | lower | nospace }}
   namespace: {{ .Release.Namespace }}
 spec:
   type: ClusterIP
   selector:
-      app: core
+      app: {{ print .Release.Name "-core" }}
   ports:
   - port: {{ .Values.core.port }}

@@ -2,18 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: api
-  name: {{ .Values.api.name }}
+    app: {{ print .Release.Name "-api" }}
+  name: {{ print .Release.Name "-" .Values.api.name | lower | nospace }}
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: {{ .Values.api.replicas }}
   selector:
     matchLabels:
-      app: api
+      app: {{ print .Release.Name "-api" }}
   template:
     metadata:
       labels:
-        app: api
+        app: {{ print .Release.Name "-api" }}
     spec:
       containers:
         - env:
@@ -30,6 +30,19 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: 'dev'
           image: '{{ .Values.api.repository }}:{{ .Values.api.tag }}'
+          {{- if hasKey .Values.api "resources" }}
+          resources:
+          {{- if hasKey .Values.api.resources "limits" }}
+          limits:
+            memory: {{ .Values.api.resources.limits.memory | quote }}
+            cpu: {{ .Values.api.resources.limits.cpu | quote }}
+          {{- end }}
+          {{- if hasKey .Values.api.resources "requests" }}
+          requests:
+            memory: {{ .Values.api.resources.requests.memory | quote }}
+            cpu: {{ .Values.api.resources.requests.cpu | quote }}
+          {{- end }}
+          {{- end }}
           ports:
           - containerPort: {{ .Values.api.port }}
           name: {{ .Values.api.name }}
@@ -38,11 +51,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: compreface-api
+  name: {{ print .Release.Name "-compreface-api" | lower | nospace }}
   namespace: {{ .Release.Namespace }}
 spec:
   type: ClusterIP
   selector:
-      app: api
+      app: {{ print .Release.Name "-api" }}
   ports:
   - port: {{ .Values.api.port }}
