@@ -4,6 +4,7 @@ metadata:
   labels:
     app: fe
   name: {{ .Values.fe.name }}
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: {{ .Values.fe.replicas }}
   selector:
@@ -27,6 +28,7 @@ metadata:
   labels:
     app: fe
   name: compreface-ui
+  namespace: {{ .Release.Namespace }}
 spec:
   type: LoadBalancer
   ports:
@@ -34,3 +36,45 @@ spec:
       targetPort: {{ .Values.fe.port }}
   selector:
     app: fe
+---
+{{- if and (hasKey .Values.fe "ingress") (hasKey .Values.fe.ingress "enabled") .Values.fe.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+{{- with .Values.fe.ingress.annotations }}
+  {{- range $key, $value := . }}
+    {{ $key }}: {{- if and (eq (typeOf $value) "bool") }} {{ $value }} {{- else }} {{ $value | quote }} {{- end }}
+  {{- end }}
+{{- end }}
+  name: {{ .Values.fe.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+{{- if hasKey .Values.fe.ingress "className" }}
+  ingressClassName: {{ .Values.fe.ingress.className }}
+{{- end }}
+{{- if .Values.fe.ingress.tls }}
+  tls:
+    - hosts:
+  {{- with .Values.fe.ingress.hosts }}
+    {{- range . }}
+        - {{ . | lower | nospace }}
+    {{- end }}
+  {{- end }}
+      secretName: {{ print .Values.fe.name "-ingress" | lower | nospace }}
+{{- end }}
+  rules:
+{{- range .Values.fe.ingress.hosts }}
+  - host: {{ . | lower | nospace }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: compreface-ui
+            port:
+              number: 8000
+        path: /
+        pathType: Prefix
+{{- end }}
+{{- end }}
+

@@ -53,7 +53,22 @@ fe:
   port: 80
   replicas: 1
   name: cf-fe
-
+  ingress:
+    enabled: true
+    className: "nginx"
+    annotations:
+      cert-manager.io/issuer: "adcs-cluster-issuer" #use specific name of issuer
+      cert-manager.io/issuer-kind: "ClusterAdcsIssuer" #or AdcsClusterIssuer
+      cert-manager.io/issuer-group: "adcs.certmanager.csf.nokia.com"
+      cert-manager.io/common-name: "$SITECODE-compreface.macsc.net.au"
+      cert-manager.io/subject-organizations: "Southern Cross Austereo"
+      cert-manager.io/subject-organizationalunits: "Technology Services"
+      cert-manager.io/subject-countries: "AU"
+      cert-manager.io/subject-localities: "$SITE"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    hosts:
+    - "$SITECODE-compreface.macsc.net.au"
+    - "compreface.macsc.net.au"
 
 imagePullSecrets: []
 nameOverride: ""
