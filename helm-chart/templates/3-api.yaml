@@ -29,7 +29,7 @@ spec:
               value: 'true'
             - name: SPRING_PROFILES_ACTIVE
               value: 'dev'
-            {{-if hasKey .Values.api "env"-}}
+            {{- if hasKey .Values.api "env" }}
               {{- range $env := .Values.api.env }}
             - name: {{ $env.name | quote }}
               value: {{- if and (eq (typeOf $env.value) "bool") }} {{ $env.value }} {{- else }} {{ $env.value | quote }} {{- end }}
@@ -58,6 +58,7 @@ spec:
         {{- range .Values.api.imagePullSecrets }}
       - name: {{ . }}
         {{- end }}
+      {{- end }}
 ---
 apiVersion: v1
 kind: Service

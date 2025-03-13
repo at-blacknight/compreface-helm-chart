@@ -35,7 +35,7 @@ spec:
         - env:
             - name: ML_PORT
               value: "{{ .Values.core.port }}"
-            {{-if hasKey .Values.core "env"-}}
+            {{- if hasKey .Values.core "env" }}
               {{- range $env := .Values.core.env }}
             - name: {{ $env.name | quote }}
               value: {{- if and (eq (typeOf $env.value) "bool") }} {{ $env.value }} {{- else }} {{ $env.value | quote }} {{- end }}
@@ -67,6 +67,7 @@ spec:
         {{- range .Values.core.imagePullSecrets }}
       - name: {{ . }}
         {{- end }}
+      {{- end }}
 ---
 apiVersion: v1
 kind: Service

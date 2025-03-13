@@ -19,35 +19,36 @@ spec:
         - env:
             - name: CLIENT_MAX_BODY_SIZE
               value: {{ default "5000K" .Values.fe.maxBodySize }}
-            {{-if hasKey .Values.fe "env"-}}
-              {{- range $env := .Values.fe.env }}
+{{- if hasKey .Values.fe "env" }}
+  {{- range $env := .Values.fe.env }}
             - name: {{ $env.name | quote }}
               value: {{- if and (eq (typeOf $env.value) "bool") }} {{ $env.value }} {{- else }} {{ $env.value | quote }} {{- end }}
-              {{- end}}
-            {{- end }}
+  {{- end}}
+{{- end }}
           image: '{{ .Values.fe.repository }}:{{ .Values.fe.tag }}'
-          {{- if hasKey .Values.fe "resources" }}
+{{- if hasKey .Values.fe "resources" }}
           resources:
-          {{- if hasKey .Values.fe.resources "limits" }}
+  {{- if hasKey .Values.fe.resources "limits" }}
           limits:
             memory: {{ .Values.fe.resources.limits.memory | quote }}
             cpu: {{ .Values.fe.resources.limits.cpu | quote }}
-          {{- end }}
-          {{- if hasKey .Values.fe.resources "requests" }}
+  {{- end }}
+  {{- if hasKey .Values.fe.resources "requests" }}
           requests:
             memory: {{ .Values.fe.resources.requests.memory | quote }}
             cpu: {{ .Values.fe.resources.requests.cpu | quote }}
-          {{- end }}
-          {{- end }}
+  {{- end }}
+{{- end }}
           name: {{ .Values.fe.name }}
           ports:
             - containerPort: {{ .Values.fe.port }}
       restartPolicy: Always
-      {{- if hasKey .Values.fe "imagePullSecrets" }}
+{{- if hasKey .Values.fe "imagePullSecrets" }}
       imagePullSecrets:
-        {{- range .Values.fe.imagePullSecrets }}
+  {{- range .Values.fe.imagePullSecrets }}
       - name: {{ . }}
-        {{- end }}
+  {{- end }}
+{{- end }}
 ---
 apiVersion: v1
 kind: Service
