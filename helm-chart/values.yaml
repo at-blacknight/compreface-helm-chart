@@ -13,8 +13,6 @@ postgres:
   db_password: postgres
   db_user: postgres
   name: cf-db-data
-  # storageClass: your-storage-class
-  # storageSize: 100Mi
 
 core:
   repository: exadel/compreface-core
