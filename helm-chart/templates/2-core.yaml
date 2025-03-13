@@ -14,6 +14,22 @@ spec:
       labels:
         app: core
     spec:
+{{- if .Values.core.tolerations }}
+      tolerations:
+  {{- range $toleration := .Values.core.tolerations }}
+        - key: {{ $toleration.key | quote }}
+          operator: {{ $toleration.operator | quote }}
+    {{- if $toleration.value }}
+          value: {{ $toleration.value | quote }}
+    {{- end }}
+    {{- if $toleration.effect }}
+          effect: {{ $toleration.effect | quote }}
+    {{- end }}
+    {{- if $toleration.tolerationSeconds }}
+          tolerationSeconds: {{ $toleration.tolerationSeconds }}
+    {{- end }}
+  {{- end }}
+{{- end }}
       containers:
         - env:
             - name: ML_PORT
