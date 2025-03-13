@@ -36,19 +36,21 @@ spec:
             - name: ML_PORT
               value: "{{ .Values.core.port }}"
           image: {{ .Values.core.repository }}:{{ .Values.core.tag }}
+          {{- if hasKey .Values.core "resources" }}
           resources:
-          {{- if .Values.core.resources.limits }}
+          {{- if hasKey .Values.core.resources "limits" }}
           limits:
-            memory: {{ default "256Mi" .Values.core.resources.limits.memory | quote }}
-            cpu: {{ default "0.02" .Values.core.resources.limits.cpu | quote }}
+            memory: {{ .Values.core.resources.limits.memory | quote }}
+            cpu: {{ .Values.core.resources.limits.cpu | quote }}
             {{- if .Values.core.resources.limits.gpu }}
             nvidia.com/gpu: {{ .Values.core.resources.limits.gpu | quote }}
             {{- end }}
           {{- end }}
-          {{- if .Values.core.resources.requests }}
+          {{- if hasKey .Values.core.resources "requests" }}
           requests:
-            memory: {{ default "125Mi" .Values.core.resources.requests.memory | quote }}
-            cpu: {{ default "0.015" .Values.core.resources.requests.cpu | quote }}
+            memory: {{ .Values.core.resources.requests.memory | quote }}
+            cpu: {{ .Values.core.resources.requests.cpu | quote }}
+          {{- end }}
           {{- end }}
           ports:
           - containerPort: {{ .Values.core.port }}

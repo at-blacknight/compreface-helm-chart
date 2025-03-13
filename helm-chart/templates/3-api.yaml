@@ -30,16 +30,18 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: 'dev'
           image: '{{ .Values.api.repository }}:{{ .Values.api.tag }}'
+          {{- if hasKey .Values.api "resources" }}
           resources:
-          {{- if .Values.api.resources.limits }}
+          {{- if hasKey .Values.api.resources "limits" }}
           limits:
-            memory: {{ default "256Mi" .Values.api.resources.limits.memory | quote }}
-            cpu: {{ default "0.02" .Values.api.resources.limits.cpu | quote }}
+            memory: {{ .Values.api.resources.limits.memory | quote }}
+            cpu: {{ .Values.api.resources.limits.cpu | quote }}
           {{- end }}
-          {{- if .Values.api.resources.requests }}
+          {{- if hasKey .Values.api.resources "requests" }}
           requests:
-            memory: {{ default "125Mi" .Values.api.resources.requests.memory | quote }}
-            cpu: {{ default "0.015" .Values.api.resources.requests.cpu | quote }}
+            memory: {{ .Values.api.resources.requests.memory | quote }}
+            cpu: {{ .Values.api.resources.requests.cpu | quote }}
+          {{- end }}
           {{- end }}
           ports:
           - containerPort: {{ .Values.api.port }}

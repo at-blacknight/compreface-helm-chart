@@ -33,16 +33,18 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: 'dev'
           image: '{{ .Values.admin.repository }}:{{ .Values.admin.tag }}'
+          {{- if hasKey .Values.admin "resources" }}
           resources:
-          {{- if .Values.admin.resources.limits }}
+          {{- if hasKey .Values.admin.resources "limits" }}
           limits:
-            memory: {{ default "256Mi" .Values.admin.resources.limits.memory | quote }}
-            cpu: {{ default "0.02" .Values.admin.resources.limits.cpu | quote }}
+            memory: {{ .Values.admin.resources.limits.memory | quote }}
+            cpu: {{ .Values.admin.resources.limits.cpu | quote }}
           {{- end }}
-          {{- if .Values.admin.resources.requests }}
+          {{- if hasKey .Values.admin.resources "requests" }}
           requests:
-            memory: {{ default "125Mi" .Values.admin.resources.requests.memory | quote }}
-            cpu: {{ default "0.015" .Values.admin.resources.requests.cpu | quote }}
+            memory: {{ .Values.admin.resources.requests.memory | quote }}
+            cpu: {{ .Values.admin.resources.requests.cpu | quote }}
+          {{- end }}
           {{- end }}
           ports:
           - containerPort: {{ .Values.admin.port }}

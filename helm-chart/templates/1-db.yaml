@@ -43,16 +43,18 @@ spec:
             - name: POSTGRES_USER
               value: {{ .Values.postgres.db_user }}
           image: {{ .Values.postgres.repository }}:{{ .Values.postgres.tag }}
+          {{- if hasKey .Values.postgres "resources" }}
           resources:
-          {{- if .Values.postgres.resources.limits }}
+          {{- if hasKey .Values.postgres.resources "limits" }}
           limits:
-            memory: {{ default "256Mi" .Values.postgres.resources.limits.memory | quote }}
-            cpu: {{ default "0.02" .Values.postgres.resources.limits.cpu | quote }}
+            memory: {{ .Values.postgres.resources.limits.memory | quote }}
+            cpu: {{ .Values.postgres.resources.limits.cpu | quote }}
           {{- end }}
-          {{- if .Values.postgres.resources.requests }}
+          {{- if hasKey .Values.postgres.resources "requests" }}
           requests:
-            memory: {{ default "125Mi" .Values.postgres.resources.requests.memory | quote }}
-            cpu: {{ default "0.015" .Values.postgres.resources.requests.cpu | quote }}
+            memory: {{ .Values.postgres.resources.requests.memory | quote }}
+            cpu: {{ .Values.postgres.resources.requests.cpu | quote }}
+          {{- end }}
           {{- end }}
           name: cf-db
           ports:
