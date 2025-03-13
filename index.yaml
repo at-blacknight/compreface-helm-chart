@@ -3,7 +3,17 @@ entries:
   compreface-kubernetes:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-03-13T16:25:03.0362568+11:00"
+    created: "2025-03-13T18:12:50.6885809+11:00"
+    description: A Helm chart of compreface for Kubernetes
+    digest: 47da8cbfc35ba4e7b2d992187ee6fe39a1dc15f32f52364267aa9ee3e9773ccd
+    name: compreface-kubernetes
+    type: application
+    urls:
+    - https://at-blacknight.github.io/compreface-helm-chart/compreface-kubernetes-0.2.2.tgz
+    version: 0.2.2
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-03-13T18:12:50.6875302+11:00"
     description: A Helm chart of compreface for Kubernetes
     digest: c2ba64c5e93401c08c7b517557ad37095c67935c36e76136447de4584c5db9a7
     name: compreface-kubernetes
@@ -13,7 +23,7 @@ entries:
     version: 0.2.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-03-13T16:25:03.0352039+11:00"
+    created: "2025-03-13T18:12:50.6870144+11:00"
     description: A Helm chart of compreface for Kubernetes
     digest: 36e3cec051a2fb88ad2f988567780707a03b821fc47fc89763b9251bd887199e
     name: compreface-kubernetes
@@ -23,7 +33,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-03-13T16:25:03.0345977+11:00"
+    created: "2025-03-13T18:12:50.685923+11:00"
     description: A Helm chart of compreface for Kubernetes
     digest: 561a5f5595e843ebf8fa00c4db8a255aaccfe11e5e5edd079a6cf37452fa8df9
     name: compreface-kubernetes
@@ -31,4 +41,4 @@ entries:
     urls:
     - https://at-blacknight.github.io/compreface-helm-chart/compreface-kubernetes-0.1.0.tgz
     version: 0.1.0
-generated: "2025-03-13T16:25:03.0339995+11:00"
+generated: "2025-03-13T18:12:50.684842+11:00"
