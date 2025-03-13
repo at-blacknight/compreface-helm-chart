@@ -10,7 +10,7 @@ $ helm repo add compreface  https://at-blacknight.github.io/compreface-helm-char
 
 You can check compreface chart version by command:
 ```commandline
-helm search repo compreface
+helm search repo compreface --versions
 
 NAME                                    CHART VERSION   APP VERSION     DESCRIPTION                              
 compreface/compreface-kubernetes        0.1.0           1.16.0          A Helm chart of compreface for Kubernetes
