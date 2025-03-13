@@ -21,6 +21,12 @@ core:
   port: 3000
   replicas: 1
   name: cf-core
+  ## Tolerations can be made specifically for core to allow use on GPU tainted nodes
+  # tolerations:
+  # - key: nvidia.com/gpu
+  #   operator: Exists
+
+    
 
 api:
   repository: exadel/compreface-api
