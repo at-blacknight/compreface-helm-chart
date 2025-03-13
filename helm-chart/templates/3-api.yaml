@@ -29,6 +29,12 @@ spec:
               value: 'true'
             - name: SPRING_PROFILES_ACTIVE
               value: 'dev'
+            {{-if hasKey .Values.api "env"-}}
+              {{- range $env := .Values.api.env }}
+            - name: {{ $env.name | quote }}
+              value: {{- if and (eq (typeOf $env.value) "bool") }} {{ $env.value }} {{- else }} {{ $env.value | quote }} {{- end }}
+              {{- end}}
+            {{- end }}
           image: '{{ .Values.api.repository }}:{{ .Values.api.tag }}'
           {{- if hasKey .Values.api "resources" }}
           resources:
@@ -47,6 +53,11 @@ spec:
           - containerPort: {{ .Values.api.port }}
           name: {{ .Values.api.name }}
       restartPolicy: Always
+      {{- if hasKey .Values.api "imagePullSecrets" }}
+      imagePullSecrets:
+        {{- range .Values.api.imagePullSecrets }}
+      - name: {{ . }}
+        {{- end }}
 ---
 apiVersion: v1
 kind: Service

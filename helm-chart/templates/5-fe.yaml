@@ -19,6 +19,12 @@ spec:
         - env:
             - name: CLIENT_MAX_BODY_SIZE
               value: {{ default "5000K" .Values.fe.maxBodySize }}
+            {{-if hasKey .Values.fe "env"-}}
+              {{- range $env := .Values.fe.env }}
+            - name: {{ $env.name | quote }}
+              value: {{- if and (eq (typeOf $env.value) "bool") }} {{ $env.value }} {{- else }} {{ $env.value | quote }} {{- end }}
+              {{- end}}
+            {{- end }}
           image: '{{ .Values.fe.repository }}:{{ .Values.fe.tag }}'
           {{- if hasKey .Values.fe "resources" }}
           resources:
@@ -37,6 +43,11 @@ spec:
           ports:
             - containerPort: {{ .Values.fe.port }}
       restartPolicy: Always
+      {{- if hasKey .Values.fe "imagePullSecrets" }}
+      imagePullSecrets:
+        {{- range .Values.fe.imagePullSecrets }}
+      - name: {{ . }}
+        {{- end }}
 ---
 apiVersion: v1
 kind: Service
