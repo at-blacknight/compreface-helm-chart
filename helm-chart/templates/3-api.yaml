@@ -63,7 +63,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ print .Release.Name "-compreface-api" | lower | nospace }}
+  name: "compreface-api"
   namespace: {{ .Release.Namespace }}
 spec:
   type: ClusterIP

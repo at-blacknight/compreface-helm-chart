@@ -55,7 +55,7 @@ kind: Service
 metadata:
   labels:
     app: {{ print .Release.Name "-fe" }}
-  name: {{ print .Release.Name "-compreface-ui" | lower | nospace }}
+  name: "compreface-ui"
   namespace: {{ .Release.Namespace }}
 spec:
   type: LoadBalancer
