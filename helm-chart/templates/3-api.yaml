@@ -22,7 +22,7 @@ spec:
             - name: POSTGRES_PASSWORD
               value: '{{ .Values.postgres.db_password }}'
             - name: POSTGRES_URL
-              value: 'jdbc:postgresql://{{ print .Release.Name "-compreface-postgres-db" | lower | nospace }}:{{ .Values.postgres.db_port }}/{{ .Values.postgres.db_name }}'
+              value: 'jdbc:postgresql://compreface-postgres-db:{{ .Values.postgres.db_port }}/{{ .Values.postgres.db_name }}'
             - name: POSTGRES_USER
               value: '{{ .Values.postgres.db_user }}'
             - name: SAVE_IMAGES_TO_DB
