@@ -15,6 +15,10 @@ spec:
       labels:
         app: {{ print .Release.Name "-core" }}
     spec:
+{{- with .Values.core.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+{{- end }}
 {{- if .Values.core.tolerations }}
       tolerations:
   {{- range $toleration := .Values.core.tolerations }}
