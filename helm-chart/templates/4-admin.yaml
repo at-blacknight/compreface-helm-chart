@@ -42,14 +42,14 @@ spec:
           {{- if hasKey .Values.admin "resources" }}
           resources:
           {{- if hasKey .Values.admin.resources "limits" }}
-          limits:
-            memory: {{ .Values.admin.resources.limits.memory | quote }}
-            cpu: {{ .Values.admin.resources.limits.cpu | quote }}
+            limits:
+              memory: {{ .Values.admin.resources.limits.memory | quote }}
+              cpu: {{ .Values.admin.resources.limits.cpu | quote }}
           {{- end }}
           {{- if hasKey .Values.admin.resources "requests" }}
-          requests:
-            memory: {{ .Values.admin.resources.requests.memory | quote }}
-            cpu: {{ .Values.admin.resources.requests.cpu | quote }}
+            requests:
+              memory: {{ .Values.admin.resources.requests.memory | quote }}
+              cpu: {{ .Values.admin.resources.requests.cpu | quote }}
           {{- end }}
           {{- end }}
           ports:

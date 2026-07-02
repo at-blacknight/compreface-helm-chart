@@ -29,14 +29,14 @@ spec:
 {{- if hasKey .Values.fe "resources" }}
           resources:
   {{- if hasKey .Values.fe.resources "limits" }}
-          limits:
-            memory: {{ .Values.fe.resources.limits.memory | quote }}
-            cpu: {{ .Values.fe.resources.limits.cpu | quote }}
+            limits:
+              memory: {{ .Values.fe.resources.limits.memory | quote }}
+              cpu: {{ .Values.fe.resources.limits.cpu | quote }}
   {{- end }}
   {{- if hasKey .Values.fe.resources "requests" }}
-          requests:
-            memory: {{ .Values.fe.resources.requests.memory | quote }}
-            cpu: {{ .Values.fe.resources.requests.cpu | quote }}
+            requests:
+              memory: {{ .Values.fe.resources.requests.memory | quote }}
+              cpu: {{ .Values.fe.resources.requests.cpu | quote }}
   {{- end }}
 {{- end }}
           name: {{ .Values.fe.name }}
