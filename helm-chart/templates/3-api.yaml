@@ -39,14 +39,14 @@ spec:
           {{- if hasKey .Values.api "resources" }}
           resources:
           {{- if hasKey .Values.api.resources "limits" }}
-          limits:
-            memory: {{ .Values.api.resources.limits.memory | quote }}
-            cpu: {{ .Values.api.resources.limits.cpu | quote }}
+            limits:
+              memory: {{ .Values.api.resources.limits.memory | quote }}
+              cpu: {{ .Values.api.resources.limits.cpu | quote }}
           {{- end }}
           {{- if hasKey .Values.api.resources "requests" }}
-          requests:
-            memory: {{ .Values.api.resources.requests.memory | quote }}
-            cpu: {{ .Values.api.resources.requests.cpu | quote }}
+            requests:
+              memory: {{ .Values.api.resources.requests.memory | quote }}
+              cpu: {{ .Values.api.resources.requests.cpu | quote }}
           {{- end }}
           {{- end }}
           ports:
